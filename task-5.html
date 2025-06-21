@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<title>Advanced Portfolio - Responsive, Fast, Dynamic</title>
+<style>
+  /* CSS Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body, h1, h2, h3, p, ul, li, a, button, input, textarea {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #f0f0f0;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover, a:focus {
+    color: #ff6f61;
+    outline: none;
+  }
+  header {
+    background: rgba(20, 40, 70, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    user-select: none;
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    user-select: none;
+  }
+  nav button:hover, nav button:focus {
+    color: #ff6f61;
+    outline: none;
+  }
+  main {
+    flex: 1 0 auto;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  section {
+    margin-bottom: 4rem;
+  }
+  .intro {
+    text-align: center;
+  }
+  .intro h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .intro p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: #c0c7d6;
+  }
+  /* Projects Section */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: rgba(30, 50, 80, 0.75);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: default;
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255,111,97,0.5);
+    outline: none;
+  }
+  .project-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+  .project-content {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    user-select: text;
+  }
+  .project-desc {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #bbbfcf;
+  }
+  .project-category {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #ff6f61;
+    font-weight: 600;
+  }
+  .filter-controls {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .filter-controls button {
+    background: #2a5298;
+    border: 2px solid transparent;
+    color: white;
+    font-weight: 600;
+    margin: 0 0.5rem 0.75rem 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+  }
+  .filter-controls button.active,
+  .filter-controls button:hover,
+  .filter-controls button:focus {
+    background: transparent;
+    border-color: #ff6f61;
+    outline: none;
+    color: #ff6f61;
+  }
+  /* Contact Section */
+  .contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(20,40,70,0.85);
+    padding: 2rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+  .contact-form h3 {
+    color: #ff6f61;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 2rem;
+  }
+  .contact-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    color: #333;
+    resize: vertical;
+    transition: box-shadow 0.3s ease;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 8px #ff6f61;
+  }
+  .contact-form button {
+    background: #ff6f61;
+    border: none;
+    padding: 0.85rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  .contact-form button:hover,
+  .contact-form button:focus {
+    background: #e85b50;
+    outline: none;
+  }
+  .form-message {
+    text-align: center;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+  .form-message.success {
+    color: #8ecf6c;
+  }
+  .form-message.error {
+    color: #ff6f61;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(20,40,70,0.95);
+    color: #90a2cc;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    header {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+    nav ul {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .intro h2 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>My Portfolio</h1>
+  <nav aria-label="Primary navigation">
+    <ul>
+      <li><button data-scroll-to="intro" type="button">Home</button></li>
+      <li><button data-scroll-to="projects" type="button">Projects</button></li>
+      <li><button data-scroll-to="contact" type="button">Contact</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="intro" class="intro" tabindex="-1">
+    <h2>Hello, I'm Jane Doe.</h2>
+    <p>I'm a passionate web developer focused on building engaging and performant websites and apps. Explore my work below.</p>
+  </section>
+
+  <section id="projects" class="projects-section" tabindex="-1">
+    <h2 style="text-align:center; margin-bottom: 1.5rem; color: #ff6f61;">Projects</h2>
+    <div class="filter-controls" role="group" aria-label="Filter projects by category">
+      <button type="button" class="active" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="web">Web Apps</button>
+      <button type="button" data-filter="design">Design</button>
+      <button type="button" data-filter="game">Games</button>
+    </div>
+
+    <div class="projects" aria-live="polite" aria-atomic="true">
+      <article class="project-card" data-category="web" tabindex="0">
+        <img 
+          class="project-img lazy" 
+          data-src="https://images.unsplash.com/photo-1502880200911-70e635c78403?auto=format&fit=crop&w=500&q=80" 
+          alt="Dashboard web app screenshot" 
+          width="500" height="281" 
+          loading="lazy"
+        />
+        <div class="project-content">
+          <h3 class="project-title">Dashboard Web App</h3>
+          <p class="project-desc">A modern dashboard for real-time analytics with dynamic charts and responsive UI.</p>
+          <div class="project-category">Web Apps</div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="design" tabindex="0">
+        <img 
+          class="project-img lazy" 
+          data-src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80" 
+          alt="Creative branding mockup" 
+          width="500" height="281" 
+          loading="lazy"
+        />
+        <div class="project-content">
+          <h3 class="project-title">Branding Design</h3>
+          <p class="project-desc">A full branding package including logo design, style guide, and marketing materials.</p>
+          <div class="project-category">Design</div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="game" tabindex="0">
+        <img 
+          class="project-img lazy" 
+          data-src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" 
+          alt="Retro game screenshot" 
+          width="500" height="281" 
+          loading="lazy"
+        />
+        <div class="project-content">
+          <h3 class="project-title">Retro Arcade Game</h3>
+          <p class="project-desc">A retro-style arcade game built with canvas for browsers with smooth animations.</p>
+          <div class="project-category">Games</div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="web" tabindex="0">
+        <img 
+          class="project-img lazy" 
+          data-src="https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&w=500&q=80" 
+          alt="E-commerce site screenshot" 
+          width="500" height="281" 
+          loading="lazy"
+        />
+        <div class="project-content">
+          <h3 class="project-title">E-commerce Website</h3>
+          <p class="project-desc">A clean, minimalist e-commerce site with fast checkout and product filters.</p>
+          <div class="project-category">Web Apps</div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="design" tabindex="0">
+        <img 
+          class="project-img lazy" 
+          data-src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=500&q=80" 
+          alt="Mobile app UI design" 
+          width="500" height="281" 
+          loading="lazy"
+        />
+        <div class="project-content">
+          <h3 class="project-title">Mobile App UI Design</h3>
+          <p class="project-desc">UI design for an intuitive, accessible mobile application focused on user experience.</p>
+          <div class="project-category">Design</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" tabindex="-1">
+    <h2 style="text-align:center; margin-bottom: 1.5rem; color: #ff6f61;">Contact Me</h2>
+    <form class="contact-form" novalidate aria-live="polite" aria-relevant="additions removals">
+      <h3>Get in Touch</h3>
+      <label for="name">Name *</label>
+      <input id="name" type="text" name="name" required minlength="2" aria-required="true" aria-describedby="name-error" />
+      <span id="name-error" class="form-message error" aria-live="assertive" style="display:none;"></span>
+
+      <label for="email">Email *</label>
+      <input id="email" type="email" name="email" required aria-required="true" aria-describedby="email-error" />
+      <span id="email-error" class="form-message error" aria-live="assertive" style="display:none;"></span>
+
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" rows="5" required minlength="10" aria-required="true" aria-describedby="message-error"></textarea>
+      <span id="message-error" class="form-message error" aria-live="assertive" style="display:none;"></span>
+
+      <button type="submit">Send Message</button>
+      <p class="form-message success" style="display:none;" role="alert" aria-live="assertive">Thank you! Your message has been sent.</p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  &copy; 2024 Jane Doe. All rights reserved.
+</footer>
+
+<script>
+  // Smooth scroll navigation
+  document.querySelectorAll('nav button[data-scroll-to]').forEach(button => {
+    button.addEventListener('click', () => {
+      const sectionId = button.getAttribute('data-scroll-to');
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.focus({preventScroll:true});
+        window.scrollTo({ top: section.offsetTop - 60, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Project filtering
+  const filterButtons = document.querySelectorAll('.filter-controls button');
+  const projects = document.querySelectorAll('.project-card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+
+      // Update active state for buttons and aria-pressed
+      filterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      projects.forEach(project => {
+        if (filter === 'all' || project.getAttribute('data-category') === filter) {
+          project.style.display = '';
+          project.setAttribute('tabindex', '0');
+        } else {
+          project.style.display = 'none';
+          project.setAttribute('tabindex', '-1');
+        }
+      });
+    });
+  });
+
+  // Lazy loading images fallback for older browsers - Intersection Observer
+  if ('IntersectionObserver' in window) {
+    const lazyImages = document.querySelectorAll('img.lazy');
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('lazy');
+          observer.unobserve(img);
+        }
+      });
+    }, {rootMargin: '0px 0px 50px 0px'});
+
+    lazyImages.forEach(img => observer.observe(img));
+  } else {
+    // Fallback: lazy load immediately
+    document.querySelectorAll('img.lazy').forEach(img => {
+      img.src = img.dataset.src;
+      img.classList.remove('lazy');
+    });
+  }
+
+  // Contact form client-side validation
+  const form = document.querySelector('.contact-form');
+  const nameInput = form.querySelector('#name');
+  const emailInput = form.querySelector('#email');
+  const messageInput = form.querySelector('#message');
+  const nameError = form.querySelector('#name-error');
+  const emailError = form.querySelector('#email-error');
+  const messageError = form.querySelector('#message-error');
+  const successMessage = form.querySelector('.form-message.success');
+
+  function validateName() {
+    if (nameInput.value.trim().length < 2) {
+      nameError.textContent = 'Please enter your name with at least 2 characters.';
+      nameError.style.display = 'block';
+      return false;
+    }
+    nameError.style.display = 'none';
+    return true;
+  }
+  function validateEmail() {
+    const email = emailInput.value.trim();
+    // Simple email regex
+    const re = /^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/;
+    if (!re.test(email)) {
+      emailError.textContent = 'Please enter a valid email address.';
+      emailError.style.display = 'block';
+      return false;
+    }
+    emailError.style.display = 'none';
+    return true;
+  }
+  function validateMessage() {
+    if (messageInput.value.trim().length < 10) {
+      messageError.textContent = 'Please enter a message with at least 10 characters.';
+      messageError.style.display = 'block';
+      return false;
+    }
+    messageError.style.display = 'none';
+    return true;
+  }
+
+  nameInput.addEventListener('input', validateName);
+  emailInput.addEventListener('input', validateEmail);
+  messageInput.addEventListener('input', validateMessage);
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const validName = validateName();
+    const validEmail = validateEmail();
+    const validMessage = validateMessage();
+
+    if (validName && validEmail && validMessage) {
+      // For demo: just show success message and clear form
+      successMessage.style.display = 'block';
+      form.reset();
+      // Hide error messages after reset
+      nameError.style.display = 'none';
+      emailError.style.display = 'none';
+      messageError.style.display = 'none';
+
+      // Hide success message after 4 seconds
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 4000);
+    } else {
+      successMessage.style.display = 'none';
+    }
+  });
+
+  // Accessibility: focus outline for keyboard users only
+  function handleFirstTab(e) {
+    if (e.key === 'Tab') {
+      document.body.classList.add('user-is-tabbing');
+      window.removeEventListener('keydown', handleFirstTab);
+    }
+  }
+  window.addEventListener('keydown', handleFirstTab);
+</script>
+</body>
+</html>
+
